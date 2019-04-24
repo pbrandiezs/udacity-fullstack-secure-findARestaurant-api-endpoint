@@ -19,6 +19,8 @@ app = Flask(__name__)
 
 @auth.verify_password
 def verify_password(username, password):
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
     user = session.query(User).filter_by(username = username).first()
     if not user or not user.verify_password(password):
         return False
@@ -28,6 +30,8 @@ def verify_password(username, password):
 
 @app.route('/users', methods = ['POST'])
 def new_user():
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
     username = request.json.get('username')
     password = request.json.get('password')
     if username is None or password is None:
@@ -47,6 +51,8 @@ def new_user():
 
 @app.route('/api/users/<int:id>')
 def get_user(id):
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
     user = session.query(User).filter_by(id=id).one()
     if not user:
         abort(400)
@@ -55,6 +61,8 @@ def get_user(id):
 @app.route('/api/resource')
 @auth.login_required
 def get_resource():
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
     return jsonify({ 'data': 'Hello, %s!' % g.user.username })
 
 
