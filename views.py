@@ -17,6 +17,8 @@ app = Flask(__name__)
 
 @app.route('/api/users', methods = ['POST'])
 def new_user():
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
     username = request.json.get('username')
     password = request.json.get('password')
     if username is None or password is None:
@@ -31,6 +33,8 @@ def new_user():
 
 @app.route('/api/users/<int:id>')
 def get_user(id):
+    DBSession = sessionmaker(bind=engine)
+    session = DBSession()
     user = session.query(User).filter_by(id=id).one()
     if not user:
         abort(400)
