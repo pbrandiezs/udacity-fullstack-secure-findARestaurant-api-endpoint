@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from models import Base, User
 from flask import Flask, jsonify, request, url_for, abort, g
 from sqlalchemy.ext.declarative import declarative_base
